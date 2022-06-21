@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-import get_info_api.moralis as moralis
 
 app = FastAPI()
 
