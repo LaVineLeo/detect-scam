@@ -98,17 +98,17 @@ async def cmc_init_database(loop, name=''):
     con.close()
 
 
-def call_fill_to_metadata(loop):
-    packet_of_data =  cmc_api.get_active_token_metadata()
-    loop.run_until_complete(fill_to_metadata(loop, data=packet_of_data))
+async def call_fill_to_metadata(loop):
+    packet_of_data = cmc_api.get_active_token_metadata()
+    loop.run_until_complete(fill_to_metadata(loop, packet_of_data))
     print('Completed filling to metadata: active token')
 
-    packet_of_data =  cmc_api.get_inactive_token_metadata()
-    loop.run_until_complete(fill_to_metadata(loop, data=packet_of_data))
+    packet_of_data = cmc_api.get_inactive_token_metadata()
+    loop.run_until_complete(fill_to_metadata(loop, packet_of_data))
     print('Completed filling to metadata: inactive token')
 
-    packet_of_data =  cmc_api.get_untracked_token_metadata()
-    loop.run_until_complete(fill_to_metadata(loop, data=packet_of_data))
+    packet_of_data = cmc_api.get_untracked_token_metadata()
+    loop.run_until_complete(fill_to_metadata(loop, packet_of_data))
     print('Completed filling to metadata: untracked token')
 
 # fill data from the API to the database
@@ -149,7 +149,6 @@ async def fill_to_metadata(loop, data: list, db_name: str = 'cmc_metadata'):
                                   first_historical_data, last_historical_data, platform, token_address,))
             print('Insert %s %s %s' % (id, name, symbol))
             await con.commit()
-        await con.close()
     pool.close()
     await pool.wait_closed()
 
@@ -157,7 +156,7 @@ async def fill_to_metadata(loop, data: list, db_name: str = 'cmc_metadata'):
 async def fill_to_price(loop, db_name='cmc_price'):
     pool = await get_pool_connection(loop)
     # Get the data from the API
-    data = cmc_api.get_price_from_cmc()
+    data = cmc_api.get_token_price_from_cmc()
 
     async with pool.acquire() as con:
         print('\n\n', len(data), '\n')
