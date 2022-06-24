@@ -23,7 +23,8 @@ async def init_total_token_table(loop):
                 symbol varchar(255),
                 chain VARCHAR(255),
                 lastest_result VARCHAR(255),
-                timestamp VARCHAR(255)''')
+                timestamp VARCHAR(255)
+            )''')
         await con.commit()
     con.close()
 

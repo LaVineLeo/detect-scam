@@ -42,7 +42,7 @@ def get_token_price_from_cmc():
 #       first_historical_data, last_historical_data, platform, token_address
 
 
-def get_metadata_from_cmc(start: int, limit: int, listing_status: str = 'active'):
+def get_metadata_from_cmc_(start: int, limit: int, listing_status: str = 'active'):
     url = api_url + 'map'
     params = {
         'listing_status': listing_status,
@@ -59,7 +59,7 @@ def get_metadata_from_cmc(start: int, limit: int, listing_status: str = 'active'
 
     return response['data']
 
-print(json.dumps(get_metadata_from_cmc(1,1, 'inactive'), indent=4))
+print(json.dumps(get_metadata_from_cmc_(1,1, 'inactive'), indent=4))
 
 def get_metadata_from_cmc(listing_status: str = 'active'):
     result_list = []
@@ -67,7 +67,7 @@ def get_metadata_from_cmc(listing_status: str = 'active'):
     start = 1
     while error_code == 0:
         print('start: ', start)
-        response = get_metadata_from_cmc(start=start, limit=5000, listing_status=listing_status)
+        response = get_metadata_from_cmc_(start=start, limit=5000, listing_status=listing_status)
         if response != None:
             result_list.extend(response)
             start += 5000
@@ -81,6 +81,7 @@ def get_inactive_token_metadata():
     return get_metadata_from_cmc(listing_status='inactive')
 def get_untracked_token_metadata():
     return get_metadata_from_cmc(listing_status='untracked')
+
 
 def get_metadata_by_address(token_address: str):
     url = 'https://pro-api.coinmarketcap.com/v2/cryptocurrency/info'
