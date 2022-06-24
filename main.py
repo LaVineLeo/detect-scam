@@ -1,44 +1,83 @@
+import json
 from fastapi import FastAPI
 
 app = FastAPI()
 
 # validate input from user
 def validate_input(token_address: str):
-    if len(token_address) != 42:
-        return False
-    if token_address[0] != '0':
-        return False
-    if token_address[1] != 'x':
-        return False
-    for i in range(2, len(token_address)):
-        if token_address[i] not in '0123456789abcdefABCDEF':
+    for i in range(len(token_address)):
+        if token_address[i].isalnum() is False:
             return False
     return True
 
-@app.get("/{token_address}")
+# input: /address/0x1234567890123456789012345678901234567890
+@app.get("/address/{token_address}")
 async def is_scam(token_address: str):
     
     if validate_input(token_address) is False:
-        return {
-            "status_code": 400,
-            "message": "Invalid token_address value",
+        return json.dumps({
+            "status": "ERR",
             "result": []
-        }
+        }, indent=4)
 
     # 
-    # this code for database find its data
-    # and return if it have
+    # this code will process the data
     #
     
-    
 
-    return {
-        "status_code": 200,
-        "message": "OK",
+    return json.dumps({
+        "status": "OK",
         "result": {
-            "token_address": token_address, 
-            "scam": False, 
-            "explain": "Token is not scam",
-            "point": 100
-        }}
+            "token_address": "0x1234567890123456789012345678901234567890", 
+            "token_name": "Bitcoin",
+            "symbol": "BTC",
+            "category": "an OK token",
+            "possibility": 20
+        }}, indent=4)
 
+@app.get('/name/{token_name}')
+async def is_scam(token_name: str):
+    if validate_input(token_name) == False:
+        return json.dumps({
+            "status": "ERR",
+            "result": []
+        }, indent=4)
+    
+    #
+    # this code will process the data
+    #
+
+    return json.dumps({
+        "status": "OK",
+        "result": {
+            "token_address": "0x1234567890123456789012345678901234567890", 
+            "token_name": "Bitcoin",
+            "symbol": "BTC",
+            "category": "an OK token",
+            "possibility": 20
+        }}, indent=4)
+
+@app.get('/symbol/{symbol}')
+async def is_scam(symbol: str):
+    if validate_input(symbol) == False:
+        return json.dumps({
+            "status": "ERR",
+            "result": []
+        }, indent=4)
+    #
+    # this code will process the data
+    #
+
+    return json.dumps({
+        "status": "OK",
+        "result": {
+            "token_address": "0x1234567890123456789012345678901234567890", 
+            "token_name": "Bitcoin",
+            "symbol": "BTC",
+            "category": "an OK token",
+            "possibility": 20
+        }}, indent=4)
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="localhost", port=8000)

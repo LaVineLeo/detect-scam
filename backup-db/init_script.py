@@ -15,6 +15,7 @@ def init_cmc_db():
     loop.run_until_complete(cmc_db.fill_to_price(loop))
     loop.run_until_complete(total_token.init_value(loop))
 
+# update the coin marketcap db
 def update_cmc_db():
     loop = cmc_db.loop
 
@@ -23,4 +24,5 @@ def update_cmc_db():
     loop.run_until_complete(cmc_db.fill_to_metadata(loop, name='new_'))
     loop.run_until_complete(cmc_db.fill_to_price(loop, name='new_'))
 
-    
+    cmc_db.change_name(loop)
+

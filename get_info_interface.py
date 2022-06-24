@@ -12,15 +12,7 @@ sys.path.append('./')
 ETH_PLATFORM_ID = 1027
 BSC_PLATFORM_ID = 1839
 
-def get_latest_result(token_address: str = None, name: str = None, symbol: str = None):
-    data = None
-    if token_address != None:
-        data = total_token.find_by_address(token_address)
-    if name != None:
-        data = total_token.find_by_name(name)
-    if symbol != None:
-        data = total_token.find_by_symbol(symbol)
-    return data
+
 
 def get_info_for_validator(token_address: str):
     # step 1: find in database
