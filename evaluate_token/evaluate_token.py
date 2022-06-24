@@ -14,11 +14,39 @@ def get_latest_result(token_address: str = None, name: str = None, symbol: str =
         data = total_token.find_by_symbol(symbol)
     return data
 
+def jsonify_latest_result(result: tuple):
+    if result == None: 
+        return None
+    if result[3] == None:
+        return None
+    return_value = {
+        'token_name': result[0],
+        'token_address': result[1],
+        'symbol': result[2],
+        'category': result[3][0],
+        'possibility': int(result[3][1:]),
+        'timestamp': result[4]
+    }
+    return return_value
+
+
 def evaluate_token(token_address: str = None, name: str = None, symbol: str = None):
     data = get_latest_result(token_address, name, symbol)
+    data = jsonify_latest_result(data)
+
     if data == None:
         data = get_info.get_info_for_validator(token_address)
-        
+        """
+        data = {
+            'token_address': token_address,
+            'name': name,
+            'symbol': symbol,
+            'cmc_metadata': {},
+            'moralis': {},
+            'bsc'/'eth': {}
+        }
+        """
+        # stage 01: check no value token
         result = validator.evaluate(data)
 
         if result['status'] != 'OK':
@@ -30,37 +58,17 @@ def evaluate_token(token_address: str = None, name: str = None, symbol: str = No
                 'possibility': 100
             }
         
-        
+        # stage 02: check simple scam token
 
-        return_value = {
-            'token_name': token_name,
-            'token_address': token_address,
-            'symbol': token_symbol,
-            'category': category,
-            'possibility': possibility,
-        }
+        """
+        there will be some code here in future
+        """
+
+        # stage 03: check complex scam token
+        
+        """
+        there will be some code here in future
+        """
+
     else:
-        token_name = data['name']
-        token_address = data['token_address']
-        token_symbol = data['symbol']
-        category = data['latest_result'][0]
-        if category == '0':
-            category = 'no value token'
-            possibility = 100
-        elif category == '1':
-            category = 'a simple scam token'
-            possibility = 100
-        elif category == '2':
-            category = 'a complicated scam token'
-            possibility = int(data['latest_result'][1:])
-        else:
-            category = 'an OK token'
-            possibility = int(data['latest_result'][1:])
-        return_value = {
-            'token_name': token_name,
-            'token_address': token_address,
-            'symbol': token_symbol,
-            'category': category,
-            'possibility': possibility,
-        }
-        return return_value
+        return data, 'OK'

@@ -65,7 +65,8 @@ def get_more_info_from_eth(token_address: str):
         if token_owner is None:
             token_owner = crawl.get_owner_of_token(token_address)
 
-    return {
+    return (total_supply, circulating_supply, liquidity, token_owner, contract_abi)
+    {
         "total_supply": total_supply,
         "circulating_supply": circulating_supply,
         "liquidity": liquidity,

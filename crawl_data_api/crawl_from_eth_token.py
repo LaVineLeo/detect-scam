@@ -2,19 +2,15 @@ import json
 import requests
 from bs4 import BeautifulSoup
 
+
 cookies = {
     '_ga': 'GA1.2.229927880.1653624028',
     '__stripe_mid': '65d18ee4-509f-44f4-94e2-6e6d18c3909b286f00',
-    '_gid': 'GA1.2.375490262.1655179281',
-    'ASP.NET_SessionId': 'eilhet5u0wejcikgy4mhghex',
-    '__cflb': '02DiuFnsSsHWYH8WqVXaqGvd6BSBaXQLU9EAVhrHJZtoW',
-    '__cf_bm': 'O5bzg6P8DC9pJdYTZ1CMhqu97wi5T527V5o9NZy2i8w-1655345002-0-Abdr8TNseaInJfrcUbLS/hPwc2f+CNczkDBsnR3frCRaokx9jeTo+oLeJQBbpVA/CUsDos3nqdrA0lWSFvxPCbnjvS0eIk958EV6Cty/8xfSvcgevTc93KMkP8uyde4Ynw==',
-    '__cuid': '2582bae2bbc1439aa5a5cce7d59bb44f',
-    'amp_fef1e8': 'e28591fc-3928-47d5-80ba-92c06d3887acR...1g5l428qg.1g5l4290t.l.5.q',
-    '_gat_gtag_UA_46998878_6': '1',
     'etherscan_userid': 'truongtnn404',
     'etherscan_pwd': '4792:Qdxb:Mnm3/nYXYI305UrNi2QRSEb+AvCt2Q+mqBrMiHY2TUg=',
     'etherscan_autologin': 'True',
+    '__cuid': '2582bae2bbc1439aa5a5cce7d59bb44f',
+    'amp_fef1e8': 'e28591fc-3928-47d5-80ba-92c06d3887acR...1g5o9dsfc.1g5ocor35.v.6.15',
 }
 
 headers = {
@@ -22,7 +18,7 @@ headers = {
     'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
     'accept-language': 'en-US,en;q=0.9',
     # Requests sorts cookies= alphabetically
-    # 'cookie': '_ga=GA1.2.229927880.1653624028; __stripe_mid=65d18ee4-509f-44f4-94e2-6e6d18c3909b286f00; _gid=GA1.2.375490262.1655179281; ASP.NET_SessionId=eilhet5u0wejcikgy4mhghex; __cflb=02DiuFnsSsHWYH8WqVXaqGvd6BSBaXQLU9EAVhrHJZtoW; __cf_bm=O5bzg6P8DC9pJdYTZ1CMhqu97wi5T527V5o9NZy2i8w-1655345002-0-Abdr8TNseaInJfrcUbLS/hPwc2f+CNczkDBsnR3frCRaokx9jeTo+oLeJQBbpVA/CUsDos3nqdrA0lWSFvxPCbnjvS0eIk958EV6Cty/8xfSvcgevTc93KMkP8uyde4Ynw==; __cuid=2582bae2bbc1439aa5a5cce7d59bb44f; amp_fef1e8=e28591fc-3928-47d5-80ba-92c06d3887acR...1g5l428qg.1g5l4290t.l.5.q; _gat_gtag_UA_46998878_6=1; etherscan_userid=truongtnn404; etherscan_pwd=4792:Qdxb:Mnm3/nYXYI305UrNi2QRSEb+AvCt2Q+mqBrMiHY2TUg=; etherscan_autologin=True',
+    # 'cookie': '_ga=GA1.2.229927880.1653624028; __stripe_mid=65d18ee4-509f-44f4-94e2-6e6d18c3909b286f00; etherscan_userid=truongtnn404; etherscan_pwd=4792:Qdxb:Mnm3/nYXYI305UrNi2QRSEb+AvCt2Q+mqBrMiHY2TUg=; etherscan_autologin=True; __cuid=2582bae2bbc1439aa5a5cce7d59bb44f; amp_fef1e8=e28591fc-3928-47d5-80ba-92c06d3887acR...1g5o9dsfc.1g5ocor35.v.6.15',
     'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="102", "Microsoft Edge";v="102"',
     'sec-ch-ua-mobile': '?0',
     'sec-ch-ua-platform': '"Windows"',
@@ -31,8 +27,9 @@ headers = {
     'sec-fetch-site': 'none',
     'sec-fetch-user': '?1',
     'upgrade-insecure-requests': '1',
-    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.124 Safari/537.36 Edg/102.0.1245.41',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.124 Safari/537.36 Edg/102.0.1245.44',
 }
+
 
 def get_transaction_info(token_address: str):
     params = {
@@ -71,7 +68,8 @@ def get_info_from_ETH(token_address: str):
     token_holder = int(token_holder)
 
     token_transaction = get_transaction_info(token_address)
-    return {
+    return ('eth', token_name, token_symbol, total_token_num, token_holder, token_transaction)
+    {
         "chain": "eth",
         "name": token_name,
         "symbol": token_symbol,

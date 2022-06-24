@@ -44,16 +44,16 @@ def get_price_erc20(token_address: str, chain_index = 0):
         return None
 
 # erc20 token transactions
-def get_transactions_erc20(token_address: str, chain_index = 0):
+def get_transactions_erc20(token_address: str, chain:str=None):
     url = 'https://deep-index.moralis.io/api/v2/erc20/%s/transfers' %token_address
     def get_next_page(cursor: str):
         if cursor == None:
             params = {
-                'chain': chains[chain_index],
+                'chain': chain,
             }
         else:
             params = {
-                'chain': chains[chain_index],
+                'chain': chain,
                 'cursor': cursor
             }
         response = requests.get(url, params=params, headers=headers).json()
@@ -67,10 +67,10 @@ def get_transactions_erc20(token_address: str, chain_index = 0):
     return transactions
 
 # numbers of erc20 token transactions
-def get_numbers_of_transactions(token_address: str, chain_index = 0):
+def get_numbers_of_transactions(token_address: str, chain: str=None):
     url = 'https://deep-index.moralis.io/api/v2/erc20/%s/transfers' %token_address
     params = {
-        'chain': chains[chain_index],
+        'chain': chain,
     }
     response = requests.get(url=url, params=params, headers=headers).json()
     return response['total']
@@ -115,16 +115,8 @@ def get_moralis_metadata_erc20(token_address: str):
     
     chain_index, name, symbol, decimal, create_at = metadata
     price = get_price_erc20(token_address, chain_index)
-    numbers_transaction = get_numbers_of_transactions(token_address, chain_index)
+    numbers_transaction = get_numbers_of_transactions(token_address, chains[chain_index])
     
-    return {
-        "chain": chains[chain_index],
-        "name": name,
-        "symbol": symbol,
-        "decimal": decimal,
-        "create_at": create_at,
-        "price": price,
-        "numbersTransactions": numbers_transaction,
-    }
+    return (chains[chain_index], name, symbol, decimal, create_at, price, numbers_transaction)
 
 
